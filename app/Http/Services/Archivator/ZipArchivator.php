@@ -1,16 +1,10 @@
 <?php
+namespace App\Http\Services\Archivator;
 
-namespace App\Http\Services;
-
-use App\Http\Requests\ImageRequest;
-use App\Http\Services\Interfaces\IArchivatorInterface;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ZipArchivator extends AbstractArchivator
 {
-    protected $tmpName;
     protected $fileName;
     protected $fileUniqueName;
     protected $filePath;

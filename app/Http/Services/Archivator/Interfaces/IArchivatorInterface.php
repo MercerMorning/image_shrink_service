@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Interfaces;
+namespace App\Http\Services\Archivator\Interfaces;
 
 
 use Symfony\Component\HttpFoundation\File\File;
