@@ -17,7 +17,7 @@ class ZipArchivator extends AbstractArchivator
     protected $fileExt;
     protected $archivePath;
 
-    public function __construct(UploadedFile $file)
+    public function __construct(File $file)
     {
         parent::__construct($file);
     }
@@ -27,10 +27,11 @@ class ZipArchivator extends AbstractArchivator
         $filePath = public_path('archive/' . $this->fileUniqueName . ".zip");
         $zip = new \ZipArchive(); //Создаём объект для работы с ZIP-архивами
         $zip->open($filePath, \ZipArchive::CREATE); //Открываем (создаём) архив archive.zip
-        $zip->addFile($this->filePath, $this->fileName, flags: \ZipArchive::FL_NODIR); //Добавляем в архив файл index.php
-        $zip->renameName($this->tmpName, $this->fileName . '.' . $this->fileExt);
+        $zip->addFile($this->filePath, $this->fileName, flags: \ZipArchive::FL_NODIR);
         $zip->close();
         $this->archivePath = $filePath;
         return $this;
     }
+
+
 }

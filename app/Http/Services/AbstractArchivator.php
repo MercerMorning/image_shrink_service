@@ -6,34 +6,31 @@ use App\Http\Requests\ImageRequest;
 use App\Http\Services\Interfaces\IArchivatorInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\File;
 
 abstract class AbstractArchivator implements IArchivatorInterface
 {
-    protected $tmpName;
-    protected $fileName;
-    protected $fileUniqueName;
     protected $filePath;
-    protected $fileExt;
+    protected $fileName;
     protected $archivePath;
 
-    function __construct(UploadedFile $file)
+    function __construct(File $file)
     {
-        $this->tmpName = $file->getFilename();
-        $this->fileName = \Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-        $this->fileUniqueName = $this->fileName . \Str::uuid();
-        $this->filePath = $file->getRealPath();
-        $this->fileExt =  $file->getClientOriginalExtension();
+        $this->filePath = $file->getPathname();
+        $this->fileName = $file->getFilename();
+        $this->fileUniqueName = \Str::slug(pathinfo($this->fileName, PATHINFO_FILENAME)) .  Str::uuid();
     }
 
-    public function getArchive()
+    public function getArchivePath()
     {
-        if (empty($this->archivePath)) throw new \Exception('archive is not set');
-        return response()->download($this->archivePath);
+//        if (empty($this->archivePath)) throw new \Exception('archive is not set');
+//        return response()->download($this->archivePath);
+        return $this->archivePath;
     }
 
-    public function createArchive()
+    public function getPathname()
     {
-        // TODO: Implement createArchive() method.
+        return $this->archivePath;
     }
 }

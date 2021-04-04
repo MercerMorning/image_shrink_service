@@ -2,13 +2,14 @@
 
 namespace App\Http\Services\Interfaces;
 
-use Illuminate\Http\UploadedFile;
+
+use Symfony\Component\HttpFoundation\File\File;
 
 interface IArchivatorInterface
 {
-    function __construct(UploadedFile $file);
+    function __construct(File $file);
 
     public function createArchive();
 
-    public function getArchive();
+    public function getPathname();
 }
