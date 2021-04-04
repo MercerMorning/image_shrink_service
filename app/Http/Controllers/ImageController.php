@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
+use Spatie\ImageOptimizer\OptimizerChain;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ImageController extends Controller
@@ -34,6 +36,11 @@ class ImageController extends Controller
                        \Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) .  Str::uuid() .'.' . $file->getClientOriginalExtension());
                    return $next($file);
                },
+               function ($file, $next) {
+                   $optimizerChain = OptimizerChainFactory::create();
+                   $optimizerChain->optimize($file->getPathname());
+                   return $next($file);
+               },
                function ($file, $next) use ($request){
                    $archive = match ($request->input('archiveType')) {
                        'zip' => new ZipArchivator($file),
@@ -44,13 +51,7 @@ class ImageController extends Controller
                    return  $archive;
                }
            ]);
-
        $file = $queue->thenReturn();
-       dd($file->getPathName());
-       exit();
-
-
-
-        return response()->download($archive->getArchivePath());
+       return response()->download($file->getPathName());
     }
 }
