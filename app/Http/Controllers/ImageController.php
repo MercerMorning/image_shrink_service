@@ -21,7 +21,7 @@ class ImageController extends Controller
         $this->file = $file->file('image');
     }
 
-    function shrink(ImageRequest $request)
+    function optimize(ImageRequest $request) //TODO: Переименовать в optimize
     {
        $resolve = new RequestResolver();
        $result = $resolve->resolve($request);

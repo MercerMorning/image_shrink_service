@@ -3,12 +3,15 @@
 namespace App\Http\Services;
 
 use App\Http\Requests\ImageRequest;
+use App\Http\Services\Archivator\Archivator;
 use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
 use App\Http\Services\Archivator\RarArchivator;
 use App\Http\Services\Archivator\ZipArchivator;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\Pngquant;
@@ -27,6 +30,11 @@ class RequestResolver
         $file = $request->file('image');
         $pipeActions = [
             function ($file, $next) {
+
+//                $file = Storage::disk('local')->put('/', $file);
+//                $file = Storage::disk('local')->put('/', $file);
+//                $file = Storage::disk('local')->put('/', $file);
+//                dd($file);
                 $file = $file->move(public_path('compress'),
                     \Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) .  Str::uuid() .'.' . $file->getClientOriginalExtension());
                 return $next($file);
@@ -44,12 +52,9 @@ class RequestResolver
         ];
         if ($request->has('archiveType')) {
             $pipeActions[] = function ($file, $next) use ($request) {
-                $archive = match ($request->input('archiveType')) {
-                    'zip' => new ZipArchivator($file),
-                    default => throw new \Exception('Unexpected match value')
-                };
+                $archive = new Archivator($file, $request->input('archiveType'));
                 $archive->createArchive();
-                if (!$archive instanceof IArchivatorInterface) throw new \Exception('Archivator doesnt implement correct contract');
+//                if (!$archive instanceof IArchivatorInterface) throw new \Exception('Archivator doesnt implement correct contract');
                 return  $archive;
             };
         }

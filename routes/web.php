@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'FrontController@index')->name('home');
-Route::post('/', 'ImageController@shrink')->name('uploadImage');
+Route::post('/', 'ImageController@optimize')->name('uploadImage');

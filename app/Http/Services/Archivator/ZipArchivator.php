@@ -10,9 +10,11 @@ class ZipArchivator extends AbstractArchivator
     protected $filePath;
     protected $fileExt;
     protected $archivePath;
+    protected $fileTmp;
 
     public function __construct(File $file)
     {
+        $this->fileTmp = $file->getRealPath();
         parent::__construct($file);
     }
 
