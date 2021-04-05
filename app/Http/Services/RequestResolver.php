@@ -7,9 +7,11 @@ use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
 use App\Http\Services\Archivator\RarArchivator;
 use App\Http\Services\Archivator\ZipArchivator;
 use Illuminate\Http\Request;
+use Illuminate\Log\Logger;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
 class RequestResolver
 {
@@ -31,7 +33,12 @@ class RequestResolver
             },
             function ($file, $next) {
                 $optimizerChain = OptimizerChainFactory::create();
-                $optimizerChain->optimize($file->getPathname());
+                $optimizerChain
+                    ->addOptimizer(new Pngquant([
+                        '--strip-all',
+                        '--all-progressive',
+                    ]))
+                    ->optimize($file->getPathname());
                 return $next($file);
             },
         ];
