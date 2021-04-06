@@ -11,8 +11,10 @@ class Archivator extends AbstractArchivator
     protected $filePath;
     protected $fileExt;
     protected $archivePath;
-    protected $archiveType;
+    public $archiveType;
     protected $allowedArchiveTypes = ['zip'];//TODO: вынести в конфиг
+
+    //TODO:переименовывать файлы в архиваторе
 
     public function __construct(File $file,  $archiveType)
     {

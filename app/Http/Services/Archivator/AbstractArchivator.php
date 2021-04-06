@@ -11,7 +11,7 @@ abstract class AbstractArchivator implements IArchivatorInterface
     protected $filePath;
     protected $fileName;
     protected $archivePath;
-    protected $archiveType;
+    public $archiveType;
 
     function __construct(File $file, $archiveType)
     {
@@ -32,7 +32,7 @@ abstract class AbstractArchivator implements IArchivatorInterface
 
     public function createArchive()
     {
-        $this->{$this->archiveType . 'Archivate'}();
+        return $this->{$this->archiveType . 'Archivate'}();
     }
 
 }
