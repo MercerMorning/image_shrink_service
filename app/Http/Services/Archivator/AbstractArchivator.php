@@ -2,6 +2,9 @@
 namespace App\Http\Services\Archivator;
 
 use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
+use App\Jobs\DeletingFiles;
+use Carbon\Carbon;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\File;
@@ -30,9 +33,14 @@ abstract class AbstractArchivator implements IArchivatorInterface
         return $this->archivePath;
     }
 
-    public function createArchive()
+    public function createArchive($seconds = null)
     {
-        return $this->{$this->archiveType . 'Archivate'}();
+        $this->{$this->archiveType . 'Archivate'}();
+        if ($seconds) {
+//            \File::delete($this->archivePath);
+            dispatch(new DeletingFiles($this->archivePath, $seconds));
+        }
+        return $this;
     }
 
 }

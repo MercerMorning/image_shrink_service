@@ -9,6 +9,7 @@ use App\Http\Services\Archivator\ZipArchivator;
 use App\Http\Services\RequestResolver;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 

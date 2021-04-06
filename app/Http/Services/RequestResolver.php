@@ -7,7 +7,7 @@ use App\Http\Services\Archivator\Archivator;
 use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
 use App\Http\Services\Archivator\RarArchivator;
 use App\Http\Services\Archivator\ZipArchivator;
-use App\Jobs\OptimizeProccess;
+use App\Jobs\DeletingFiles;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
@@ -55,7 +55,7 @@ class RequestResolver
             $pipeActions[] = function ($file, $next) use ($request) {
                 $archive = new Archivator($file, $request->input('archiveType'));
 //                dispatch(new OptimizeProccess($archive));
-                $archive->createArchive();
+                $archive->createArchive(10);
                 if (!$archive instanceof IArchivatorInterface) throw new \Exception('Archivator doesnt implement correct contract');
                 return  $archive;
             };
