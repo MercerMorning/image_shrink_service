@@ -33,13 +33,18 @@ abstract class AbstractArchivator implements IArchivatorInterface
         return $this->archivePath;
     }
 
+    public function getFileName()
+    {
+        return $this->fileUniqueName;
+    }
+
     public function createArchive($seconds = null)
     {
         $this->{$this->archiveType . 'Archivate'}();
-        if ($seconds) {
-//            \File::delete($this->archivePath);
-            dispatch(new DeletingFiles($this->archivePath, $seconds));
-        }
+//        if ($seconds) {
+////            \File::delete($this->archivePath);
+//            dispatch(new DeletingFiles($this->archivePath, $seconds));
+//        }
         return $this;
     }
 
