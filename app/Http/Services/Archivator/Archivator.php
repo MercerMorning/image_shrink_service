@@ -2,39 +2,37 @@
 namespace App\Http\Services\Archivator;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\File;
 
 class Archivator extends AbstractArchivator
 {
-    protected $fileName;
     protected $fileUniqueName;
     protected $filePath;
-    protected $fileExt;
     protected $archivePath;
     public $archiveType;
-    protected $allowedArchiveTypes = ['zip'];//TODO: вынести в конфиг
 
     //TODO:переименовывать файлы в архиваторе
 
     public function __construct(File $file,  $archiveType)
     {
-//        $archive = match ($request->input('archiveType')) {
-//            'zip' => new ZipArchivator($file), //TODO: Вынести в общий архиватор
-//            default => throw new \Exception('Unexpected match value')
-//        };
-
         parent::__construct($file, $archiveType);
-        //TODO: проверить наличие метода
     }
 
     protected function zipArchivate()
     {
-        $filePath = public_path('archive/' . $this->fileUniqueName . ".zip");
+//        dd( public_path('archive/' . $this->fileUniqueName . ".zip"));
+//        $archivePath = public_path('archive/' . 'file' . ".zip");
+        $archivePath = 'app/archives/'.  $this->fileUniqueName . '.zip';
+//        dd($archivePath);
         $zip = new \ZipArchive(); //Создаём объект для работы с ZIP-архивами
-        $zip->open($filePath, \ZipArchive::CREATE); //Открываем (создаём) архив archive.zip
-        $zip->addFile( $this->filePath, $this->fileName, flags: \ZipArchive::FL_NODIR);
+//        $zip->open($filePath, \ZipArchive::CREATE); //Открываем (создаём) архив archive.zip]
+//        $zip->open($archivePath, \ZipArchive::CREATE); //Открываем (создаём) архив archive.zip]
+        $zip->open(storage_path($archivePath), \ZipArchive::CREATE); //Открываем (создаём) архив archive.zip]
+            $zip->addFile($this->filePath);
+        $zip->addEmptyDir('dir');
         $zip->close();
-        $this->archivePath = $filePath;
+        $this->archivePath = storage_path($archivePath);
         return $this;
     }
 

@@ -27,11 +27,14 @@ class ImageController extends Controller
     {
        $resolve = new RequestResolver();
        $result = $resolve->resolve($request);
-        $response = new Response($result->getPathName());
+//       dd($result->getPathName());
+        $response = new Response(Storage::get($result->getPathName()));
         $response
-            ->header('Content-Type', 'application/zip')
-            ->header('Content-Disposition', 'attachment; filename=' . $result->getFileName() . '.zip');
-        \File::delete($result->getPathName());
+//            ->header('Content-Type', 'application/zip')
+//            ->header('Content-Disposition', 'attachment; filename=' . $result->getFileName() . '.zip');
+            ->header('Content-Disposition', 'attachment; filename=' . 'file' . '.zip');
+//        \File::delete($result->getPathName());
+//        dd($result->getFileName());
         return $response;
     }
 }

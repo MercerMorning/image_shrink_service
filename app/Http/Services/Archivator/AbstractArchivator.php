@@ -6,6 +6,7 @@ use App\Jobs\DeletingFiles;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -14,18 +15,21 @@ abstract class AbstractArchivator implements IArchivatorInterface
     protected $filePath;
     protected $fileName;
     protected $archivePath;
+    protected $availableTypes = ['zip'];
     public $archiveType;
 
-    function __construct(File $file, $archiveType)
+    function __construct(File|UploadedFile $file, string $archiveType)
     {
-        $this->filePath = $file->getPathname();
-        $this->fileName = $file->getFilename();
-        $this->fileUniqueName = \Str::slug(pathinfo($this->fileName, PATHINFO_FILENAME)) .  Str::uuid();
-        $this->archiveType = $archiveType;
+        $this->filePath = $file instanceof  UploadedFile ? $file->getRealPath() : $file->getPathname();
+        $this->fileUniqueName = \Str::slug(pathinfo($file->getClientOriginalName() ?? $file->getFilename(), PATHINFO_FILENAME)) . '_' . Str::uuid();
+        $this->archiveType = in_array($archiveType, $this->availableTypes) ? $archiveType : throw new \Exception('This archive type isnt available');
+    }
 
-//        if (in_array($archiveType, $this->allowedArchiveTypes)) {
-//
-//        }
+    public function createArchive()
+    {
+        $methodName = $this->archiveType . 'Archivate';
+        if (!method_exists($this,  $methodName)) throw new \Exception('Method doesnt exists');
+        return $this->{$methodName}();
     }
 
     public function getPathname()
@@ -38,14 +42,6 @@ abstract class AbstractArchivator implements IArchivatorInterface
         return $this->fileUniqueName;
     }
 
-    public function createArchive($seconds = null)
-    {
-        $this->{$this->archiveType . 'Archivate'}();
-//        if ($seconds) {
-////            \File::delete($this->archivePath);
-//            dispatch(new DeletingFiles($this->archivePath, $seconds));
-//        }
-        return $this;
-    }
+
 
 }

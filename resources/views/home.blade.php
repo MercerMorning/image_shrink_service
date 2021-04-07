@@ -16,6 +16,8 @@
             <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
             <label for="archiveType">Zip</label>
             <input type="checkbox" name="archiveType" id="archiveType" value="zip">
+            <label for="archiveType">Rarr</label>
+            <input type="checkbox" name="archiveType" id="archiveType" value="rarr">
 
         </div>
         <input type="submit" value="Отправить">
