@@ -7,6 +7,7 @@ use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
 use App\Http\Services\Archivator\RarArchivator;
 use App\Http\Services\Archivator\ZipArchivator;
 use App\Http\Services\RequestResolver;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pipeline\Pipeline;
@@ -23,18 +24,16 @@ class ImageController extends Controller
         $this->file = $file->file('image');
     }
 
-    function optimize(ImageRequest $request) //TODO: Переименовать в optimize
+    function optimize(ImageRequest $request)
     {
        $resolve = new RequestResolver();
        $result = $resolve->resolve($request);
-//       dd($result->getPathName());
-        $response = new Response(Storage::get($result->getPathName()));
+        $file = new File($result->getPathName());
+        $response = new Response($file->getContent());
         $response
-//            ->header('Content-Type', 'application/zip')
-//            ->header('Content-Disposition', 'attachment; filename=' . $result->getFileName() . '.zip');
-            ->header('Content-Disposition', 'attachment; filename=' . 'file' . '.zip');
-//        \File::delete($result->getPathName());
-//        dd($result->getFileName());
+            ->header('Content-Type', $file->getType())
+            ->header('Content-Disposition', 'attachment; filename=' . $file->getFilename());
+        \File::delete($result->getPathName());
         return $response;
     }
 }

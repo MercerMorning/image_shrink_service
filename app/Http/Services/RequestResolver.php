@@ -30,21 +30,21 @@ class RequestResolver
     {
         $file = $request->file('image');
         $pipeActions = [
-//            function ($file, $next) {
-//                $file = $file->move(public_path('compress'),
-//                    \Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) .  Str::uuid() .'.' . $file->getClientOriginalExtension());
-//                return $next($file);
-//            },
-//            function ($file, $next) {
-//                $optimizerChain = OptimizerChainFactory::create();
-//                $optimizerChain
-//                    ->addOptimizer(new Pngquant([
-//                        '--strip-all',
-//                        '--all-progressive',
-//                    ]))
-//                    ->optimize($file->getPathname());
-//                return $next($file);
-//            },
+            function ($file, $next) {
+                $file = $file->move(public_path('compress'),
+                    \Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) .  Str::uuid() .'.' . $file->getClientOriginalExtension());
+                return $next($file);
+            },
+            function ($file, $next) {
+                $optimizerChain = OptimizerChainFactory::create();
+                $optimizerChain
+                    ->addOptimizer(new Pngquant([
+                        '--strip-all',
+                        '--all-progressive',
+                    ]))
+                    ->optimize($file->getPathname());
+                return $next($file);
+            },
         ];
         if ($request->has('archiveType')) {
             $pipeActions[] = function ($file, $next) use ($request) {

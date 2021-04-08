@@ -20,8 +20,9 @@ abstract class AbstractArchivator implements IArchivatorInterface
 
     function __construct(File|UploadedFile $file, string $archiveType)
     {
-        $this->filePath = $file instanceof  UploadedFile ? $file->getRealPath() : $file->getPathname();
-        $this->fileUniqueName = \Str::slug(pathinfo($file->getClientOriginalName() ?? $file->getFilename(), PATHINFO_FILENAME)) . '_' . Str::uuid();
+        $isUploaded = $file instanceof  UploadedFile;
+        $this->filePath = $isUploaded ? $file->getRealPath() : $file->getPathname();
+        $this->fileUniqueName = \Str::slug(pathinfo($isUploaded ? $file->getClientOriginalName() : $file->getFilename(), PATHINFO_FILENAME)) . '_' . Str::uuid();
         $this->archiveType = in_array($archiveType, $this->availableTypes) ? $archiveType : throw new \Exception('This archive type isnt available');
     }
 
