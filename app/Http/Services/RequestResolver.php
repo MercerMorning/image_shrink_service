@@ -2,18 +2,14 @@
 
 namespace App\Http\Services;
 
+use App\Helpers\UniqueName;
 use App\Http\Requests\ImageRequest;
 use App\Http\Services\Archivator\Archivator;
 use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
 use App\Http\Services\Archivator\RarArchivator;
 use App\Http\Services\Archivator\ZipArchivator;
-use App\Jobs\DeletingFiles;
-use Illuminate\Http\File;
-use Illuminate\Http\Request;
-use Illuminate\Log\Logger;
+use App\Http\Services\Optimizer\Optimizer;
 use Illuminate\Pipeline\Pipeline;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
@@ -31,11 +27,15 @@ class RequestResolver
         $file = $request->file('image');
         $pipeActions = [
             function ($file, $next) {
-                $file = $file->move(public_path('compress'),
-                    \Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) .  Str::uuid() .'.' . $file->getClientOriginalExtension());
-                return $next($file);
+                $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $fileExt = $file->getClientOriginalExtension();
+                $fileUniqueName = UniqueName::generate($fileName, $fileExt, function ($name) {
+                    return 'optimized_' . $name;
+                });
+                $renamedFile = $file->move(public_path('compress'), $fileUniqueName);
+                return $next($renamedFile);
             },
-            function ($file, $next) {
+            function ($file, $next) use ($request) {
                 $optimizerChain = OptimizerChainFactory::create();
                 $optimizerChain
                     ->addOptimizer(new Pngquant([
@@ -45,15 +45,13 @@ class RequestResolver
                     ->optimize($file->getPathname());
                 return $next($file);
             },
-        ];
-        if ($request->has('archiveType')) {
-            $pipeActions[] = function ($file, $next) use ($request) {
+            $request->has('archiveType') ? function ($file, $next) use ($request) {
                 $archive = new Archivator($file, $request->input('archiveType'));
                 $archive->createArchive();
                 if (!$archive instanceof IArchivatorInterface) throw new \Exception('Archivator doesnt implement correct contract');
                 return  $archive;
-            };
-        }
+            } : null
+        ];
 
         return $this->pipeLine
             ->send($file)

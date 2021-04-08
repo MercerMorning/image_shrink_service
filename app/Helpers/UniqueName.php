@@ -2,11 +2,16 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Str;
+
 class UniqueName
 {
-    public static function creade_unique_name()
+    public static function generate(string $fileName, string $fileExt, callable $function)
     {
-        return 123;
+        $name = \Str::slug($fileName) .  Str::uuid() . '.' . $fileExt;
+        $name = $function($name);
+        $name = $name . $fileExt;
+        return $name;
     }
 
 }

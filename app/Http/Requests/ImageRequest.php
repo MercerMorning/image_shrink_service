@@ -25,6 +25,8 @@ class ImageRequest extends FormRequest
     {
         return [
             'image' => 'required|file|mimes:jpeg,jpg,png,gif|max:10000',
+//            'archiveType' => 'required',
+//            'optimizer' => 'required',
         ];
     }
 
