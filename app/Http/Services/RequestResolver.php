@@ -36,21 +36,16 @@ class RequestResolver
                 return $next($renamedFile);
             },
             function ($file, $next) use ($request) {
-                $optimizerChain = OptimizerChainFactory::create();
-                $optimizerChain
-                    ->addOptimizer(new Pngquant([
-                        '--strip-all',
-                        '--all-progressive',
-                    ]))
-                    ->optimize($file->getPathname());
+                $optimizer = new Optimizer($file, $request->only('optimizerType'));
+                $optimizer->optimize();
                 return $next($file);
             },
             $request->has('archiveType') ? function ($file, $next) use ($request) {
                 $archive = new Archivator($file, $request->input('archiveType'));
                 $archive->createArchive();
                 if (!$archive instanceof IArchivatorInterface) throw new \Exception('Archivator doesnt implement correct contract');
-                return  $archive;
-            } : null
+                return $next($archive);
+            } : fn($file, $next) => $next($file)
         ];
 
         return $this->pipeLine

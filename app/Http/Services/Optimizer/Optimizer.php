@@ -1,12 +1,35 @@
 <?php
 namespace App\Http\Services\Optimizer;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
+
 class Optimizer
 {
+    private $optimizerChain;
+    private $filePath;
+//    private $allowedOptimizers =  ['Pngquant'];
 
-    public function __construct()
+//    private function allowedOptimizers()
+//    {
+//        yield new Pngquant();
+//    }
+
+    public function __construct(File $file, $optimizerType = ['Pngquant'])
     {
+//        $optimizerType = collect($optimizerType)->intersect($this->allowedOptimizers)->values()->toArray();
+//        dd($optimizerType);
+        $this->optimizerChain = OptimizerChainFactory::create();
+        $this->filePath = $file->getPathname();
+    }
 
+    public function optimize()
+    {
+//        foreach ($this->allowedOptimizers() as $optimizer) {
+//            $this->optimizerChain->addOptimizer($optimizer)->optimize($this->filePath);
+//        }
+        $this->optimizerChain->optimize($this->filePath);
+        return true;
     }
 
 

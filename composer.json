@@ -11,6 +11,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
+        "phpstan/phpstan": "^0.12.83",
         "spatie/laravel-medialibrary": "^9.5"
     },
     "require-dev": {

@@ -18,6 +18,9 @@
             <input type="checkbox" name="archiveType" id="archiveType" value="zip">
             <label for="archiveType">Rarr</label>
             <input type="checkbox" name="archiveType" id="archiveType" value="rarr">
+            <br>
+            <label for="archiveType">Pngquant</label>
+            <input type="checkbox" name="optimizerType" id="optimizerType" value="Pngquant">
 
         </div>
         <input type="submit" value="Отправить">
