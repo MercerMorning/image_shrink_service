@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Services\Archivator;
 
+use App\Helpers\UniqueName;
 use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
 use App\Jobs\DeletingFiles;
 use Carbon\Carbon;
@@ -21,8 +22,10 @@ abstract class AbstractArchivator implements IArchivatorInterface
     function __construct(File|UploadedFile $file, string $archiveType)
     {
         $isUploaded = $file instanceof  UploadedFile;
+        $fileExt = '.' . Str::lower($archiveType);
+        $fileName = $isUploaded ? $file->getClientOriginalName() : $file->getFilename();
         $this->filePath = $isUploaded ? $file->getRealPath() : $file->getPathname();
-        $this->fileUniqueName = \Str::slug(pathinfo($isUploaded ? $file->getClientOriginalName() : $file->getFilename(), PATHINFO_FILENAME)) . '_' . Str::uuid();
+        $this->fileUniqueName = UniqueName::generate($fileName, $fileExt);
         $this->archiveType = in_array($archiveType, $this->availableTypes) ? $archiveType : throw new \Exception('This archive type isnt available');
     }
 

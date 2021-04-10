@@ -23,13 +23,12 @@ class Optimizer
         $this->filePath = $file->getPathname();
     }
 
-    public function optimize()
+    public function optimize() : void
     {
 //        foreach ($this->allowedOptimizers() as $optimizer) {
 //            $this->optimizerChain->addOptimizer($optimizer)->optimize($this->filePath);
 //        }
         $this->optimizerChain->optimize($this->filePath);
-        return true;
     }
 
 
