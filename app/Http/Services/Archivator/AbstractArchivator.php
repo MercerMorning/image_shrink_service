@@ -17,6 +17,7 @@ abstract class AbstractArchivator implements IArchivatorInterface
     protected $fileName;
     protected $archivePath;
     protected $availableTypes = ['zip'];
+    protected $savingPath;
     public $archiveType;
 
     function __construct(File|UploadedFile $file, string $archiveType)
@@ -27,6 +28,7 @@ abstract class AbstractArchivator implements IArchivatorInterface
         $this->filePath = $isUploaded ? $file->getRealPath() : $file->getPathname();
         $this->fileUniqueName = UniqueName::generate($fileName, $fileExt);
         $this->archiveType = in_array($archiveType, $this->availableTypes) ? $archiveType : throw new \Exception('This archive type isnt available');
+        $this->savingPath = storage_path('app/archive') ;
     }
 
     public function createArchive()

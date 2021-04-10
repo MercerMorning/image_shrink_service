@@ -32,7 +32,7 @@ class UniqueName
 
     private function addExt(string $fileExt)
     {
-        $this->fileName = $this->fileName . $fileExt;
+        $this->fileName = $this->fileName . '.' . $fileExt;
         return $this;
     }
     private function get()

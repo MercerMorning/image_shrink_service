@@ -6,10 +6,10 @@ use App\Helpers\UniqueName;
 use App\Http\Requests\ImageRequest;
 use App\Http\Services\Archivator\Archivator;
 use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
-use App\Http\Services\Archivator\RarArchivator;
-use App\Http\Services\Archivator\ZipArchivator;
 use App\Http\Services\Optimizer\Optimizer;
+use App\Http\Services\UniqueFileSaver;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\Storage;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
@@ -27,16 +27,11 @@ class RequestResolver
         $file = $request->file('image');
         $pipeActions = [
             function ($file, $next) {
-                $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $fileExt = $file->getClientOriginalExtension();
-                $fileUniqueName = UniqueName::generate($fileName, $fileExt, function ($name) {
-                    return 'optimized_' . $name;
-                });
-                $renamedFile = $file->move(public_path('compress'), $fileUniqueName);
+                $renamedFile = UniqueFileSaver::save($file, 'optimized_', storage_path('app/compress'));
                 return $next($renamedFile);
             },
             function ($file, $next) use ($request) {
-                $optimizer = new Optimizer($file, $request->only('optimizerType'));
+                $optimizer = new Optimizer($file);
                 $optimizer->optimize();
                 return $next($file);
             },

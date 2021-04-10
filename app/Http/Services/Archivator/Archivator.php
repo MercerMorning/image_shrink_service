@@ -21,12 +21,12 @@ class Archivator extends AbstractArchivator
 
     protected function zipArchivate()
     {
-        $archivePath = 'app/archives/'.  $this->fileUniqueName;
+        $archivePath = $this->savingPath .  $this->fileUniqueName;
         $zip = new \ZipArchive();
-        $zip->open(storage_path($archivePath), \ZipArchive::CREATE);
+        $zip->open($archivePath, \ZipArchive::CREATE);
         $zip->addFile($this->filePath);
         $zip->close();
-        $this->archivePath = storage_path($archivePath);
+        $this->archivePath = $archivePath;
         return $this;
     }
 
