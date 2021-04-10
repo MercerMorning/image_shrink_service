@@ -17,7 +17,7 @@ class UniqueFileSaver
 //        $this->filePath = $file->getPathname();
 //    }
 
-    public static function save(UploadedFile $file, string $prefix = null, string $path = null)
+    public static function save(UploadedFile $file, string $prefix = null, string $path = '/')
     {
         $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $fileExt = $file->getClientOriginalExtension();

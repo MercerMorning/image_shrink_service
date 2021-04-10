@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Services\Archivator\Archivator;
+use App\Http\Services\UniqueFileSaver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -17,16 +18,16 @@ class ArchivatorTest extends TestCase
      *
      * @return void
      */
-    public function test_init()
-    {
-        $mockFile = UploadedFile::fake()->create('example.jpg');
-        $archivator = new Archivator($mockFile, 'zip');
-//        $this->assertInstanceOf(Archivator::class, $archivator->createArchive());
-        $archivatorProperties = init($archivator, Archivator::class, ['filePath', 'fileName', 'fileUniqueName', 'archiveType']);
-        foreach ($archivatorProperties as $archivatorProperty) {
-            $this->assertNotNull($archivatorProperty);
-        }
-    }
+//    public function test_init()
+//    {
+//        $mockFile = UploadedFile::fake()->create('example.jpg');
+//        $archivator = new Archivator($mockFile, 'zip');
+////        $this->assertInstanceOf(Archivator::class, $archivator->createArchive());
+//        $archivatorProperties = init($archivator, Archivator::class, ['filePath', 'fileName', 'fileUniqueName', 'archiveType']);
+//        foreach ($archivatorProperties as $archivatorProperty) {
+//            $this->assertNotNull($archivatorProperty);
+//        }
+//    }
 
     public function test_archivate()
     {
@@ -40,6 +41,13 @@ class ArchivatorTest extends TestCase
         }
 
     }
+
+//    public function test_rename()
+//    {
+//        $mockFile = UploadedFile::fake()->create('example.jpg');
+//        UniqueFileSaver::save($mockFile);
+////        $this->assertInstanceOf(Archivator::class, $archivator->createArchive());
+//    }
 }
 function init(object $object, string $class, array $properties)
 {

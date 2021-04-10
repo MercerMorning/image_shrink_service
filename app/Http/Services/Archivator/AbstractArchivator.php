@@ -18,7 +18,8 @@ abstract class AbstractArchivator implements IArchivatorInterface
     protected $archivePath;
     protected $availableTypes = ['zip'];
     protected $savingPath;
-    public $archiveType;
+    protected $fileUniqueName;
+    protected $archiveType;
 
     function __construct(File|UploadedFile $file, string $archiveType)
     {
@@ -43,7 +44,7 @@ abstract class AbstractArchivator implements IArchivatorInterface
         return $this->archivePath;
     }
 
-    public function getFileName()
+    protected function getFileName()
     {
         return $this->fileUniqueName;
     }
