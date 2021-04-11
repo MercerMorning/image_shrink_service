@@ -1903,9 +1903,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      effect: null,
       image: null,
       x: null,
       y: null,
@@ -1932,6 +1939,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     crop: function crop() {
+      this.effect = true;
       var image = document.getElementById('image');
       var vue = this;
       var cropper = new Cropper(image, {
@@ -1943,6 +1951,15 @@ __webpack_require__.r(__webpack_exports__);
           vue.height = event.detail.height;
         }
       });
+    },
+    effecter: function effecter(e) {
+      this.effect = $(e.target).attr('value');
+
+      if ($(e.target).attr('value') == 'blur') {
+        $('.cropper-hide').css({
+          'filter': 'blur(10px)'
+        });
+      }
     }
   }
 });
@@ -41286,6 +41303,16 @@ var render = function() {
       _vm._v("Example file input")
     ]),
     _vm._v(" "),
+    _vm.effect
+      ? _c("div", [
+          _c("input", {
+            attrs: { type: "checkbox", name: "effect", value: "blur" },
+            on: { change: _vm.effecter }
+          }),
+          _vm._v("blur\n    ")
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("input", {
       staticClass: "form-control-file",
       attrs: { type: "file", name: "image", id: "exampleFormControlFile1" },
@@ -41328,6 +41355,13 @@ var render = function() {
       ? _c("input", {
           attrs: { type: "hidden", name: "height" },
           domProps: { value: _vm.height }
+        })
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.effect
+      ? _c("input", {
+          attrs: { type: "hidden", name: "effect" },
+          domProps: { value: _vm.effect }
         })
       : _vm._e(),
     _vm._v(" "),

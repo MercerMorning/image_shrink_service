@@ -40,7 +40,14 @@ class RequestResolver
                 $image = Image::load($file->getPathName());
                 $image->manualCrop($width, $height, $x, $y)->save();
                 return $next($file);
+
             },
+            $request->has('effect') ? function ($file, $next) use ($request) {
+                $image = Image::load($file->getPathName());
+                $image->blur(10);
+                $image->save();
+                return $next($file);
+            } : fn($file, $next) => $next($file),
             function ($file, $next) use ($request) {
                 $optimizer = new Optimizer($file);
                 $optimizer->optimize();
