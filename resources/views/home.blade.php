@@ -10,6 +10,7 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <div class="container" id="app">
+    <locale-component></locale-component>
     <form action="{{ route('uploadImage') }}" enctype="multipart/form-data" method="post">
         @csrf
             <prop-component></prop-component>

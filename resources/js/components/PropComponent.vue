@@ -5,7 +5,9 @@
     <label for="archiveType">Rarr</label>
     <input type="checkbox" name="archiveType" id="archiveType" value="rarr">
     <br>
-    <label for="exampleFormControlFile1">Example file input</label>
+    <label for="exampleFormControlFile1">
+      Example file input
+    </label>
     <div v-if="effect">
       <input v-on:change="effecter" type="checkbox" name="effect" value="blur">blur
     </div>

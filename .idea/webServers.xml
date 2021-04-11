@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="e3c049d0-57dd-4444-87a1-1ce51ce2c8a7" name="tayota_main">
+        <fileTransfer accessType="SFTP" host="31.192.105.179" port="22" sshConfigId="ed13d986-1020-4284-8d73-c38fbd7172ef" sshConfig="root@31.192.105.179:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
