@@ -6,7 +6,7 @@
 {{--    <input type="radio" name="archiveType" value="zip"> zip--}}
 {{--    <input type="radio" name="archiveType" value="rar"> rar--}}
 {{--</form>--}}
-
+<link  href="{{ 'css/cropper.css' }}" rel="stylesheet">
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <div class="container" id="app">
@@ -15,5 +15,5 @@
             <prop-component></prop-component>
     </form>
 </div>
-<script src="js/app.js"></script>
+<script src="{!! mix('js/app.js') !!}"></script>
 {{--{{ $errors }}--}}

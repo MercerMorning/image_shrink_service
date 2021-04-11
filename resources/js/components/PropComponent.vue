@@ -7,11 +7,16 @@
     <br>
     <label for="exampleFormControlFile1">Example file input</label>
     <input v-on:change="sync" type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
-    <img v-if="image" :src="image">
-<!--    <input @onclick="upload" type="submit" value="Отправить">-->
-<!--    <input v-if="image" type="button" v-on:click="upload" value="Отправить">-->
+    <div v-if="image">
+      <img v-if="image" :src="image" v-on:click="crop" id="image">
+<!--      this.crop()-->
+    </div>
+
+    <input v-if="x" type="hidden" name="x" :value="x">
+    <input v-if="y" type="hidden" name="y" :value="y">
+    <input v-if="width" type="hidden" name="width" :value="width">
+    <input v-if="height" type="hidden" name="height" :value="height">
     <input v-if="image" type="submit" value="Отправить">
-<!--    <span v-if="is_refresh">uploading</span>-->
   </div>
 
 </template>
@@ -21,21 +26,16 @@
       data: function (){
         return {
           image: null,
+          x: null,
+          y: null,
+          height: null,
+          width: null
         }
       },
-
       props: [
         'archiveTypes'
       ],
-      mounted() {
-      },
       methods: {
-        selectImage (file) {
-          this.file = file;
-          let reader = new FileReader();
-          reader.onload = this.onImageLoad;
-          reader.readAsDataURL(file);
-        },
         sync (e) {
           e.preventDefault();
           let fr = new FileReader();
@@ -44,8 +44,24 @@
             fr.onloadend = function(e) {
               resolve(e.target.result);
             }
-          }).then((resolve) => this.image = resolve);
+          }).then( (resolve) => function (resolve) {
+            this.image = resolve;
+          }.call(this, resolve))
+        },
+        crop() {
+          const image = document.getElementById('image');
+          let vue = this;
+          const cropper = new Cropper(image, {
+            aspectRatio: 16 / 9,
+            crop(event) {
+              vue.x = event.detail.x;
+              vue.y = event.detail.y;
+              vue.width = event.detail.width;
+              vue.height = event.detail.height;
+            },
+          });
         }
+
       }
     }
 </script>
