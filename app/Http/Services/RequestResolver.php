@@ -8,8 +8,10 @@ use App\Http\Services\Archivator\Archivator;
 use App\Http\Services\Archivator\Interfaces\IArchivatorInterface;
 use App\Http\Services\Optimizer\Optimizer;
 use App\Http\Services\UniqueFileSaver;
+use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Image\Image;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
@@ -22,13 +24,22 @@ class RequestResolver
         $this->pipeLine = new Pipeline();
     }
 
-    public function resolve(ImageRequest $request)
+    public function resolve(Request $request)
     {
         $file = $request->file('image');
         $pipeActions = [
             function ($file, $next) {
                 $renamedFile = UniqueFileSaver::save($file, 'optimized_', storage_path('app/compress'));
                 return $next($renamedFile);
+            },
+            function ($file, $next) use ($request) {
+                $width = $request->input('width');
+                $height = $request->input('height');
+                $x = $request->input('x');
+                $y = $request->input('y');
+                $image = Image::load($file->getPathName());
+                $image->manualCrop($width, $height, $x, $y)->save();
+                return $next($file);
             },
             function ($file, $next) use ($request) {
                 $optimizer = new Optimizer($file);

@@ -27,7 +27,6 @@ class ImageController extends Controller
 //    function optimize(ImageRequest $request)
     function optimize(Request $request)
     {
-        dd($request->all());
         $resolve = new RequestResolver();
         $result = $resolve->resolve($request);
         $file = new File($result->getPathName());
