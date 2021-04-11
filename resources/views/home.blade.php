@@ -7,24 +7,13 @@
 {{--    <input type="radio" name="archiveType" value="rar"> rar--}}
 {{--</form>--}}
 
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<div class="container">
+<div class="container" id="app">
     <form action="{{ route('uploadImage') }}" enctype="multipart/form-data" method="post">
         @csrf
-        <div class="form-group">
-            <label for="exampleFormControlFile1">Example file input</label>
-            <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
-            <label for="archiveType">Zip</label>
-            <input type="checkbox" name="archiveType" id="archiveType" value="zip">
-            <label for="archiveType">Rarr</label>
-            <input type="checkbox" name="archiveType" id="archiveType" value="rarr">
-            <br>
-            <label for="archiveType">Pngquant</label>
-            <input type="checkbox" name="optimizerType" id="optimizerType" value="Pngquant">
-
-        </div>
-        <input type="submit" value="Отправить">
+            <prop-component></prop-component>
     </form>
 </div>
-
+<script src="js/app.js"></script>
 {{--{{ $errors }}--}}
