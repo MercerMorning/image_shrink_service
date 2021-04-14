@@ -16,7 +16,8 @@ window.Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        auth: false
+        auth: false,
+        token: null
     },
     mutations: {
         login (state) {
@@ -39,6 +40,7 @@ import ImageForm from './components/Image/FormComponent.vue';
 import LoginForm from './components/LoginFormComponent.vue';
 import RegisterForm from './components/RegisterFormComponent.vue';
 import Main from './components/MainComponent.vue';
+import NotFound from './components/NotFound.vue';
 
 import guest from './middleware/guest'
 import auth from './middleware/auth'
@@ -82,7 +84,12 @@ const routes = [
                 auth
             ]
         },
+    },
+   {
+        path: '*',
+        component: NotFound,
     }
+
 ]
 
 Vue.component('main-component', Main);

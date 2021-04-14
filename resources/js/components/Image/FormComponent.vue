@@ -1,4 +1,5 @@
 <template>
+<!--  <form v-on:submit="send" >-->
   <form v-on:submit="send" >
       <div class="input-group mb-3">
           <div class="input-group-prepend">
