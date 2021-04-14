@@ -13,4 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'FrontController@index')->name('home');
+Route::get('{vue_capture?}', function () {
+    return view('welcome');
+})->where('vue_capture', '[\/\w\.-]*');
+
+//Route::get('/', 'FrontController@index')->name('home');
+#Route::view('/', 'welcome')->name('home');
+#Route::view('/registration', 'auth.register')->name('registration');

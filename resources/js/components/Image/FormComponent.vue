@@ -19,6 +19,11 @@
       <img v-if="image" :src="image" v-on:click="crop" id="image">
     </div>
 
+      <ul v-if="optimizedImages">
+          <li v-for="image of optimizedImages">
+              <a v-bind:href="image">картинка</a>
+          </li>
+      </ul>
     <input v-if="x" type="hidden" name="x" :value="x">
     <input v-if="y" type="hidden" name="y" :value="y">
     <input v-if="width" type="hidden" name="width" :value="width">
@@ -35,14 +40,15 @@
 <script>
     export default {
       data: function (){
-        return {
-          effect: null,
-          image: null,
-          x: null,
-          y: null,
-          height: null,
-          width: null
-        }
+          return {
+              effect: null,
+              image: null,
+              x: null,
+              y: null,
+              height: null,
+              width: null,
+              optimizedImages: null
+          }
       },
       props: [
         'archiveTypes'
@@ -52,16 +58,19 @@
               e.preventDefault();
               // console.log( new FormData(e.target).get('image'));
               axios.post('/api', new FormData(e.target))
-                  .then(function (data) {
-                      console.log(data.headers['content-type']);
-                      const downloadUrl = window.URL.createObjectURL(new Blob([data.data], {type: 'attachment; filename="' + data.headers.filename + '"'}));
-                      const link = document.createElement('a');
-                      link.href = downloadUrl;
-                      // link.setAttribute('download', data.headers.filename); //any other extension
-                      link.setAttribute('download', 'file.png'); //any other extension
-                      document.body.appendChild(link);
-                      link.click();
-                      link.remove();
+                  .then(function (response) {
+                      // const reader = new FileReader();
+                      console.log(response.data);
+
+                      // console.log(data.headers['content-type']);
+                      // const downloadUrl = window.URL.createObjectURL(new Blob([data.data], {type: 'attachment; filename="' + data.headers.filename + '"'}));
+                      // const link = document.createElement('a');
+                      // link.href = downloadUrl;
+                      // // link.setAttribute('download', data.headers.filename); //any other extension
+                      // link.setAttribute('download', 'file.png'); //any other extension
+                      // document.body.appendChild(link);
+                      // link.click();
+                      // link.remove();
                   })
                   .catch(function (resp) {
                       console.log(resp);
