@@ -9,13 +9,41 @@ window.Cropper = require('cropperjs');
 window.Vue = require('vue').default;
 
 import VueRouter from 'vue-router';
+import Vuex from 'vuex'
 
 window.Vue.use(VueRouter);
+window.Vue.use(Vuex);
 
-// import ImageForm from './components/Image/FormComponent.vue';
-import ExampleComponent from './components/ExampleComponent.vue';
+const store = new Vuex.Store({
+    state: {
+        auth: false
+    },
+    mutations: {
+        login (state) {
+            state.auth = true
+        }
+    },
+    getters: {
+        isLoggedIn: function (state) {
+            return state.auth;
+        }
+    }
+    // mutations: {
+    //     increment (state) {
+    //         state.count++
+    //     }
+    // }
+})
+
+import ImageForm from './components/Image/FormComponent.vue';
 import LoginForm from './components/LoginFormComponent.vue';
 import RegisterForm from './components/RegisterFormComponent.vue';
+import Main from './components/MainComponent.vue';
+
+import guest from './middleware/guest'
+import auth from './middleware/auth'
+import middlewarePipeline from './middlewarePipeline'
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -29,20 +57,35 @@ const routes = [
         path: '/reg',
         component: RegisterForm,
         name: 'registerForm',
+        meta: {
+            middleware: [
+                guest
+            ]
+        }
     },
     {
         path: '/login',
         component: LoginForm,
-        name: 'loginForm'
+        name: 'loginForm',
+        meta: {
+            middleware: [
+                guest
+            ]
+        }
     },
+    {
+        path: '/optimize',
+        component: ImageForm,
+        name: 'optimize',
+        meta: {
+            middleware: [
+                auth
+            ]
+        },
+    }
 ]
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// Vue.component('prop-component', require('./components/PropComponent.vue').default);
-// Vue.component('locale-component', require('./components/LocaleComponent.vue').default);
+Vue.component('main-component', Main);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -52,9 +95,26 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const router = new VueRouter({  mode: 'history', routes })
 
+router.beforeEach((to, from, next) => {
+    if (!to.meta.middleware) {
+        return next()
+    }
+    const middleware = to.meta.middleware
+    const context = {
+        to,
+        from,
+        next,
+        store
+    }
+    return middleware[0]({
+        ...context,
+        next: middlewarePipeline(context, middleware, 1)
+    })
+})
 
 const app = new Vue({
     el: '#app',
     router: router,
+    store: store,
 });
 // const app = new Vue({ router }).$mount('#app')

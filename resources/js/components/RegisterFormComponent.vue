@@ -24,13 +24,23 @@ export default {
     methods: {
         register(e) {
             e.preventDefault();
+
+          // this.$store.commit('login');
+          // console.log(this.$store.state.auth)
+
+          // this.$router.replace('/login')
+          //
+          // app.$router.replace('/login');
             axios.post('/api/auth/registration', new FormData(e.target))
-                .then( response => app.$router.replace('/login'))
+                .then( response => {
+                  alert('success')
+                  this.$router.replace('/login')
+                })
                 .catch( response => alert('couldnt reg'))
         }
     },
     mounted() {
-        console.log(123)
+        // console.log(123)
     }
 }
 </script>

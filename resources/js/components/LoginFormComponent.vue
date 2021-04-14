@@ -29,12 +29,17 @@ export default {
         login(e) {
             e.preventDefault();
             axios.post('/api/auth/login', new FormData(e.target))
-                .then( response => alert('done!'))
-                .catch( response => alert('couldnt reg'))
+                .then( response => {
+                  this.$store.commit('login');
+                  // alert(this.$store.getters.isLoggedIn);
+                  alert('done log!')
+                  this.$router.replace('/optimize')
+                })
+                .catch( response => alert('couldnt log'))
         }
     },
     mounted() {
-        console.log('Component mounted.')
+        // console.log('Component mounted.')
     }
 }
 </script>
