@@ -27,15 +27,20 @@ class ImageController extends Controller
 //    function optimize(ImageRequest $request)
     function optimize(Request $request)
     {
-//        dd($request->all());
-        $resolve = new RequestResolver();
-        $result = $resolve->resolve($request);
-        $file = new File($result->getPathName());
-        $response = new Response($file->getContent());
-        $response
-            ->header('Content-Type', $file->getType())
-            ->header('Content-Disposition', 'attachment; filename=' . $file->getFilename());
-        \File::delete($result->getPathName());
-        return $response;
+        if ($request->ajax()) {
+            $resolve = new RequestResolver();
+            $result = $resolve->resolve($request);
+            $file = new \Symfony\Component\HttpFoundation\File\File($result->getPathName());
+            $response = new Response($file->getContent());
+//        $response = new Response(['content' => 123, 'name' =>  123]);
+            $response
+                ->header('Content-Type', $file->getType())
+                ->header('Content-Disposition', 'attachment; filename=' . $file->getFilename())
+                ->header('filename', $file->getFilename());
+            \File::delete($result->getPathName());
+            return $response;
+        }
+        return response()->json(['status' => 404]);
+
     }
 }
