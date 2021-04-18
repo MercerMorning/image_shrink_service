@@ -16,6 +16,7 @@
         "phpstan/phpstan": "^0.12.83",
         "spatie/laravel-medialibrary": "^9.5",
         "tymon/jwt-auth": "dev-develop",
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.2",
         "workerman/workerman": "^4.0"
     },
     "require-dev": {

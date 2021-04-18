@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Jobs\DeletingFiles;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,6 +23,7 @@ class AuthController extends Controller
      */
     public function login($graphRequest)
     {
+        DeletingFiles::dispatch();
 //        $credentials = request(['email', 'password']);
 //        if (! $token = auth()->attempt($credentials)) {
         if (! $token = auth()->attempt($graphRequest)) {

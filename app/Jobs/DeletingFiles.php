@@ -23,10 +23,10 @@ class DeletingFiles implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($path, $seconds)
+    public function __construct()
     {
-       $this->seconds = $seconds;
-        $this->path = $path;
+//       $this->seconds = $seconds;
+//        $this->path = $path;
     }
 
     /**
@@ -36,8 +36,9 @@ class DeletingFiles implements ShouldQueue
      */
     public function handle()
     {
-        sleep($this->seconds);
-        \File::delete($this->path);
+        echo 123;
+//        sleep($this->seconds);
+//        \File::delete($this->path);
     }
 }
 
