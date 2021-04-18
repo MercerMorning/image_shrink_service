@@ -1,0 +1,48 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+   messages: [Message!]! @hasMany
+}
+
+type Query {
+  user(id: ID! @eq): User @find
+  users: [User!]! @paginate
+  message(id: ID! @eq): Message @find
+}
+
+type Message {
+  id: ID!
+  content: String!
+}
+
+type UserPaginator {
+  paginatorInfo: PaginatorInfo!
+  data: [User!]!
+}
+
+type PaginatorInfo {
+  count: Int!
+  currentPage: Int!
+  firstItem: Int
+  hasMorePages: Boolean!
+  lastItem: Int
+  lastPage: Int!
+  perPage: Int!
+  total: Int!
+}
+
+type Mutation {
+  createUser(
+    name: String!
+    email: String! @rules(apply: ["email", "unique:users"])
+    password: String! @rules(apply: ["min:6"])
+  ): User @create
+}
+
+type Mutation {
+  login(
+    email: String!
+    password: String!
+  ): String @field(resolver: "AuthMutator@resolve")
+}

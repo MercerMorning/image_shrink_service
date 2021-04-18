@@ -12,6 +12,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "nuwave/lighthouse": "^5.3",
         "phpstan/phpstan": "^0.12.83",
         "spatie/laravel-medialibrary": "^9.5",
         "tymon/jwt-auth": "dev-develop",
