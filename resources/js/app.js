@@ -20,13 +20,17 @@ const store = new Vuex.Store({
         token: null
     },
     mutations: {
-        login (state) {
+        login (state, token) {
             state.auth = true
+            state.token = token
         }
     },
     getters: {
         isLoggedIn: function (state) {
             return state.auth;
+        },
+        Token: function (state) {
+            return state.token;
         }
     }
     // mutations: {
@@ -41,6 +45,7 @@ import LoginForm from './components/LoginFormComponent.vue';
 import RegisterForm from './components/RegisterFormComponent.vue';
 import Main from './components/MainComponent.vue';
 import NotFound from './components/NotFound.vue';
+import Messages from './components/MessagesComponent.vue';
 
 import guest from './middleware/guest'
 import auth from './middleware/auth'
@@ -79,6 +84,16 @@ const routes = [
         path: '/optimize',
         component: ImageForm,
         name: 'optimize',
+        meta: {
+            middleware: [
+                auth
+            ]
+        },
+    },
+    {
+        path: '/messages',
+        component: Messages,
+        name: 'messages',
         meta: {
             middleware: [
                 auth

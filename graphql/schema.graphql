@@ -9,6 +9,7 @@ type Query {
   user(id: ID! @eq): User @find
   users: [User!]! @paginate
   message(id: ID! @eq): Message @find
+  messages: [Message!]! @all
 }
 
 type Message {
@@ -51,4 +52,13 @@ type Mutation {
       name: String!
       password: String!
   ): String @field(resolver: "AuthMutator@register")
+
+}
+
+type Mutation {
+  createUser(name: String!): User! @create
+}
+
+type Mutation {
+  createMessage(content: String!, user_id: Int!): Message! @create
 }
