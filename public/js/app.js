@@ -2003,16 +2003,23 @@ __webpack_require__.r(__webpack_exports__);
     login: function login(e) {
       var _this = this;
 
-      e.preventDefault();
-      axios.post('/api/auth/login', new FormData(e.target)).then(function (response) {
-        _this.$store.commit('login'); // alert(this.$store.getters.isLoggedIn);
+      e.preventDefault(); // axios.post('/graphql/auth/login', new FormData(e.target))
+      // axios.post('/graphql', new FormData(e.target))
 
+      axios.post('/graphql', {
+        query: "\n                  mutation {\n                    login(email:\"".concat(new FormData(e.target).get('email'), "\", password:\"").concat(new FormData(e.target).get('password'), "\")\n                  }\n                  ")
+      }).then(function (response) {
+        // let result = new FormData(e.target);
+        console.log(response.data.data.login); // console.log(response.data.login);
 
-        alert('done log!');
+        _this.$store.commit('login'); // // alert(this.$store.getters.isLoggedIn);
+        // alert('done log!')
+
 
         _this.$router.replace('/optimize');
-      })["catch"](function (response) {
-        return alert('couldnt log');
+      }) // .catch( response => alert('couldnt log'))
+      ["catch"](function (response) {
+        return console.log(response);
       });
     }
   },
@@ -2097,18 +2104,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   methods: {
     register: function register(e) {
-      var _this = this;
-
-      e.preventDefault(); // this.$store.commit('login');
-      // console.log(this.$store.state.auth)
-      // this.$router.replace('/login')
-      //
-      // app.$router.replace('/login');
-
-      axios.post('/api/auth/registration', new FormData(e.target)).then(function (response) {
-        alert('success');
-
-        _this.$router.replace('/login');
+      e.preventDefault();
+      axios.post('/graphql', {
+        query: "\n                  mutation {\n                    registration(\n                      email:\"".concat(new FormData(e.target).get('email'), "\",\n                      password:\"").concat(new FormData(e.target).get('password'), "\"\n                      name:\"").concat(new FormData(e.target).get('name'), "\"\n                      )\n                  }\n                  ")
+      }).then(function (response) {
+        console.log(response); // alert('success')
+        // this.$router.replace('/login')
       })["catch"](function (response) {
         return alert('couldnt reg');
       });
@@ -2195,7 +2196,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__.default.Store({
  */
 
 var routes = [{
-  path: '/reg',
+  path: '/registration',
   component: _components_RegisterFormComponent_vue__WEBPACK_IMPORTED_MODULE_4__.default,
   name: 'registerForm',
   meta: {
@@ -2351,7 +2352,8 @@ function auth(_ref) {
 
   if (!store.getters.isLoggedIn) {
     return next({
-      name: 'loginForm'
+      // name: 'loginForm'
+      name: 'registerForm'
     });
   }
 

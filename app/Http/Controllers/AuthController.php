@@ -12,7 +12,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'registration']]);
+//        $this->middleware('auth:api', ['except' => ['login', 'registration']]);
     }
 
     /**
@@ -20,15 +20,16 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login($graphRequest)
     {
-        $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
+//        $credentials = request(['email', 'password']);
+//        if (! $token = auth()->attempt($credentials)) {
+        if (! $token = auth()->attempt($graphRequest)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return $token;
+//        return $this->respondWithToken($token);
     }
 
     /**
@@ -63,7 +64,7 @@ class AuthController extends Controller
         return $this->respondWithToken(auth()->refresh());
     }
 
-    public function registration()
+    public function registration($graphRequest)
     {
         $name = request('name');
         $email = request('email');

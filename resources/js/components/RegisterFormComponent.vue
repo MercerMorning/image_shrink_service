@@ -24,17 +24,21 @@ export default {
     methods: {
         register(e) {
             e.preventDefault();
-
-          // this.$store.commit('login');
-          // console.log(this.$store.state.auth)
-
-          // this.$router.replace('/login')
-          //
-          // app.$router.replace('/login');
-            axios.post('/api/auth/registration', new FormData(e.target))
+            axios.post('/graphql',  {
+              query: `
+                  mutation {
+                    registration(
+                      email:"${new FormData(e.target).get('email')}",
+                      password:"${new FormData(e.target).get('password')}"
+                      name:"${new FormData(e.target).get('name')}"
+                      )
+                  }
+                  `
+            })
                 .then( response => {
-                  alert('success')
-                  this.$router.replace('/login')
+                  console.log(response);
+                  // alert('success')
+                  // this.$router.replace('/login')
                 })
                 .catch( response => alert('couldnt reg'))
         }

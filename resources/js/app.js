@@ -56,7 +56,7 @@ import middlewarePipeline from './middlewarePipeline'
 
 const routes = [
     {
-        path: '/reg',
+        path: '/registration',
         component: RegisterForm,
         name: 'registerForm',
         meta: {
