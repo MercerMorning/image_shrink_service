@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
     use HasFactory;
+    use HasEvents;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +17,7 @@ class Message extends Model
      * @var array
      */
     protected $fillable = [
-        'content',
+        'content', 'user_id'
     ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -25,4 +27,10 @@ class Message extends Model
         return $this->belongsTo(User::class);
     }
 
+    public static function __callStatic($name, $arguments) {
+        // Замечание: значение $name регистрозависимо.
+        echo "Вызов статического метода '$name' "
+            . implode(', ', $arguments). "\n";
+        exit();
+    }
 }

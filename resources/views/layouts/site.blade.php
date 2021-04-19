@@ -6,5 +6,7 @@
 <body>
 @yield('content')
 <script src="{!! mix('js/app.js') !!}"></script>
+@livewireScripts
+@livewireStyles
 </body>
 </html>
