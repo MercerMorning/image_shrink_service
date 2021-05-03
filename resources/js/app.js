@@ -19,20 +19,24 @@ Vue.use(Vuetify)
 const store = new Vuex.Store({
     state: {
         auth: false,
-        token: null
+        token: localStorage.getItem('token') || '',
     },
     mutations: {
-        login (state, token) {
-            state.auth = true
-            state.token = token
+        login (state, payload) {
+            localStorage.auth = true;
+            localStorage.token = payload.token;
+            // state.auth = true
+            // state.token = token
         }
     },
     getters: {
         isLoggedIn: function (state) {
-            return state.auth;
+            return localStorage.getItem('auth');
+            // return state.auth;
         },
         Token: function (state) {
-            return state.token;
+            return localStorage.getItem('token');
+            // return state.token;
         }
     }
     // mutations: {

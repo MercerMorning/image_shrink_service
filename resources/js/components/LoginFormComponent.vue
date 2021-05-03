@@ -48,7 +48,8 @@ export default {
               this.errors = response.data.errors[0].extensions.validation;
             } else {
               let token = response.data.data.login;
-              this.$store.commit('login', { token });
+              this.$store.commit({ type: "login", token: token});
+              // console.log(localStorage.getItem('token'))
               this.$router.replace('/optimize')
             }
             // console.log(response.data.data.login);

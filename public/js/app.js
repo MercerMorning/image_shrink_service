@@ -2019,9 +2019,11 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           var token = response.data.data.login;
 
-          _this.$store.commit('login', {
+          _this.$store.commit({
+            type: "login",
             token: token
-          });
+          }); // console.log(localStorage.getItem('token'))
+
 
           _this.$router.replace('/optimize');
         } // console.log(response.data.data.login);
@@ -2275,20 +2277,21 @@ Vue.use((vuetify__WEBPACK_IMPORTED_MODULE_2___default()));
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__.default.Store({
   state: {
     auth: false,
-    token: null
+    token: localStorage.getItem('token') || ''
   },
   mutations: {
-    login: function login(state, token) {
-      state.auth = true;
-      state.token = token;
+    login: function login(state, payload) {
+      localStorage.auth = true;
+      localStorage.token = payload.token; // state.auth = true
+      // state.token = token
     }
   },
   getters: {
     isLoggedIn: function isLoggedIn(state) {
-      return state.auth;
+      return localStorage.getItem('auth'); // return state.auth;
     },
     Token: function Token(state) {
-      return state.token;
+      return localStorage.getItem('token'); // return state.token;
     }
   } // mutations: {
   //     increment (state) {
@@ -2524,7 +2527,7 @@ function guest(_ref) {
 
   if (store.getters.isLoggedIn) {
     return next({
-      name: 'messages'
+      name: 'optimize'
     });
   }
 
