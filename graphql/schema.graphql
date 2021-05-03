@@ -35,14 +35,65 @@ type PaginatorInfo {
 
 type Mutation {
   login(
-    email: String!
-    password: String!
+    email: String! @rules(
+                apply: ["email", "required", "exists:users,email"],
+                 messages: [
+                                             {
+                                                 rule: "email"
+                                                 message: "Email is incorrect"
+                                             }
+                                             {
+                                                 rule: "required"
+                                                 message: "Email is required"
+                                             }
+                                             {
+                                                 rule: "unique"
+                                                 message: "Email must exists in table"
+                                             }
+                                         ])
+    password: String! @rules(
+                apply: ["required"],
+                            messages: [
+                                    {
+                                        rule: "required"
+                                        message: "Password is required"
+                                    }
+                                ])
   ): String @field(resolver: "AuthMutator@login")
 
   registration(
-      email: String! @rules(apply: ["email", "required"], attribute: "user email")
-      name: String! @rules(apply: ["required"], attribute: "user name")
-      password: String! @rules(apply: ["required"], attribute: "user name")
+      email: String! @rules(
+            apply: ["email", "required", "unique:users,email"],
+             messages: [
+                                         {
+                                             rule: "email"
+                                             message: "Email is incorrect"
+                                         }
+                                         {
+                                             rule: "required"
+                                             message: "Email is required"
+                                         }
+                                         {
+                                             rule: "unique"
+                                             message: "Email must be unique"
+                                         }
+                                     ])
+      name: String! @rules(
+            apply: ["required"],
+            messages: [
+                    {
+                        rule: "required"
+                        message: "Name is required"
+                    }
+                ])
+      password: String! @rules(
+            apply: ["required"],
+                        messages: [
+                                {
+                                    rule: "required"
+                                    message: "Password is required"
+                                }
+                            ])
   ): String @field(resolver: "AuthMutator@register")
 }
 

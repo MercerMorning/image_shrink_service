@@ -1981,40 +1981,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      errors: []
+    };
+  },
   methods: {
-    data: function data() {
-      return {
-        messages: []
-      };
-    } // login(e) {
-    //     e.preventDefault();
-    //     // axios.post('/graphql/auth/login', new FormData(e.target))
-    //     // axios.post('/graphql', new FormData(e.target))
-    //     axios.post('/graphql',  {
-    //         query: `
-    //           mutation {
-    //             login(email:"${new FormData(e.target).get('email')}", password:"${new FormData(e.target).get('password')}")
-    //           }
-    //           `
-    //       })
-    //         .then( response => {
-    //           // let result = new FormData(e.target);
-    //           // console.log(response.data.data.login);
-    //
-    //           // console.log(response.data.login);
-    //
-    //           this.$store.commit('login', response.data.data.login);
-    //
-    //           // // alert(this.$store.getters.isLoggedIn);
-    //           // alert('done log!')
-    //           // alert(this.$store.getters.Token)
-    //           this.$router.replace('/messages')
-    //         })
-    //         // .catch( response => alert('couldnt log'))
-    //         .catch( response =>  console.log(response))
-    // }
+    login: function login(e) {
+      var _this = this;
 
+      e.preventDefault();
+      axios.post('/graphql', {
+        query: "\n                  mutation {\n                    login(email:\"".concat(new FormData(e.target).get('email'), "\", password:\"").concat(new FormData(e.target).get('password'), "\")\n                  }\n                  ")
+      }).then(function (response) {
+        if (response.data.errors) {
+          _this.errors = response.data.errors[0].extensions.validation;
+        } else {
+          var token = response.data.data.login;
+
+          _this.$store.commit('login', {
+            token: token
+          });
+
+          _this.$router.replace('/optimize');
+        } // console.log(response.data.data.login);
+        // this.$store.commit('login');
+
+      }); // .catch( response => alert('couldnt log'))
+      // .catch( response =>  console.log(response))
+    }
   },
   mounted: function mounted() {// console.log('Component mounted.')
   }
@@ -2137,15 +2152,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      errors: []
+    };
+  },
   methods: {
     register: function register(e) {
+      var _this = this;
+
       e.preventDefault();
       axios.post('/graphql', {
         query: "\n                  mutation {\n                    registration(\n                      email:\"".concat(new FormData(e.target).get('email'), "\",\n                      password:\"").concat(new FormData(e.target).get('password'), "\"\n                      name:\"").concat(new FormData(e.target).get('name'), "\"\n                      )\n                  }\n                  ")
       }).then(function (response) {
-        console.log(response.data); // alert('success')
+        if (response.data.errors) {
+          _this.errors = response.data.errors[0].extensions.validation;
+        } else {
+          _this.$router.replace('/login');
+        } // alert('success')
         // this.$router.replace('/login')
+
       }); // .catch( response => alert('couldnt reg'))
     }
   },
@@ -43690,16 +43722,106 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "ul",
-    { attrs: { id: "example-1" } },
-    _vm._l(_vm.messages, function(message) {
-      return _c("li", [_vm._v("\n    " + _vm._s(message) + "\n  ")])
-    }),
-    0
-  )
+  return _c("div", { staticClass: "container" }, [
+    _c("form", { on: { submit: _vm.login } }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _vm._m(2),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("Submit")]
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      _vm._l(_vm.errors, function(error) {
+        return _c(
+          "div",
+          {
+            key: error[0],
+            staticClass: "alert alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_vm._v("\n        " + _vm._s(error[0]) + "\n      ")]
+        )
+      }),
+      0
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+        _vm._v("Email address")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          name: "email",
+          id: "exampleInputEmail1",
+          "aria-describedby": "emailHelp",
+          placeholder: "Enter email"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "small",
+        { staticClass: "form-text text-muted", attrs: { id: "emailHelp" } },
+        [_vm._v("We'll never share your email with anyone else.")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "exampleInputPassword2" } }, [
+        _vm._v("Name")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          name: "name",
+          type: "text",
+          id: "exampleInputPassword2",
+          placeholder: "Name"
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "exampleInputPassword3" } }, [
+        _vm._v("Password")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          name: "password",
+          type: "password",
+          id: "exampleInputPassword3",
+          placeholder: "Password"
+        }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -43849,7 +43971,23 @@ var render = function() {
         { staticClass: "btn btn-primary", attrs: { type: "submit" } },
         [_vm._v("Submit")]
       )
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      _vm._l(_vm.errors, function(error) {
+        return _c(
+          "div",
+          {
+            key: error[0],
+            staticClass: "alert alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_vm._v("\n          " + _vm._s(error[0]) + "\n        ")]
+        )
+      }),
+      0
+    )
   ])
 }
 var staticRenderFns = [

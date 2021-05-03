@@ -17,11 +17,21 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+      <div>
+        <div class="alert alert-danger" role="alert" v-for="error in errors" :key="error[0]">
+          {{ error[0] }}
+        </div>
+      </div>
     </div>
 </template>
 
 <script>
 export default {
+  data: function (){
+    return {
+      errors: []
+    }
+  },
     methods: {
         register(e) {
             e.preventDefault();
@@ -37,7 +47,11 @@ export default {
                   `
             })
                 .then( response => {
-                  console.log(response.data);
+                  if (response.data.errors) {
+                    this.errors = response.data.errors[0].extensions.validation;
+                  } else {
+                    this.$router.replace('/login');
+                  }
                   // alert('success')
                   // this.$router.replace('/login')
                 })
