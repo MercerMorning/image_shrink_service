@@ -34,31 +34,16 @@ type PaginatorInfo {
 }
 
 type Mutation {
-  createUser(
-    name: String!
-    email: String! @rules(apply: ["email", "unique:users"])
-    password: String! @rules(apply: ["min:6"])
-  ): User @create
-}
-
-type Mutation {
   login(
     email: String!
     password: String!
   ): String @field(resolver: "AuthMutator@login")
 
   registration(
-      email: String!
-      name: String!
-      password: String!
+      email: String! @rules(apply: ["email", "required"], attribute: "user email")
+      name: String! @rules(apply: ["required"], attribute: "user name")
+      password: String! @rules(apply: ["required"], attribute: "user name")
   ): String @field(resolver: "AuthMutator@register")
-
 }
 
-type Mutation {
-  createUser(name: String!): User! @create
-}
 
-type Mutation {
-  createMessage(content: String!, user_id: Int!): Message! @create
-}

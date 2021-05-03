@@ -3,7 +3,8 @@
         <form v-on:submit="register">
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
-                <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+<!--                <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">-->
+                <input name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
@@ -36,11 +37,11 @@ export default {
                   `
             })
                 .then( response => {
-                  console.log(response);
+                  console.log(response.data);
                   // alert('success')
                   // this.$router.replace('/login')
                 })
-                .catch( response => alert('couldnt reg'))
+                // .catch( response => alert('couldnt reg'))
         }
     },
     mounted() {

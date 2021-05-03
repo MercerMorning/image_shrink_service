@@ -2,6 +2,7 @@
 
 use App\Jobs\DeletingFiles;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -68,16 +69,11 @@ class AuthController extends Controller
 
     public function registration($graphRequest)
     {
-        $name = request('name');
-        $email = request('email');
-        $password = request('password');
-
         $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = Hash::make($password);
+        $user->name = $graphRequest['name'];;
+        $user->email = $graphRequest['email'];;
+        $user->password = Hash::make($graphRequest['password']);
         $user->save();
-
         return response()->json(['message' => 'Successfully registration!']);
     }
 

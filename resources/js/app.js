@@ -10,9 +10,11 @@ window.Vue = require('vue').default;
 
 import VueRouter from 'vue-router';
 import Vuex from 'vuex'
+import Vuetify from 'vuetify'
 
 window.Vue.use(VueRouter);
 window.Vue.use(Vuex);
+Vue.use(Vuetify)
 
 const store = new Vuex.Store({
     state: {
@@ -45,6 +47,7 @@ import LoginForm from './components/LoginFormComponent.vue';
 import RegisterForm from './components/RegisterFormComponent.vue';
 import Main from './components/MainComponent.vue';
 import NotFound from './components/NotFound.vue';
+import Welcome from './components/WelcomeComponent.vue';
 import Messages from './components/MessagesComponent.vue';
 
 import guest from './middleware/guest'
@@ -60,6 +63,16 @@ import middlewarePipeline from './middlewarePipeline'
  */
 
 const routes = [
+    {
+        path: '',
+        component: Welcome,
+        name: 'home',
+        meta: {
+            middleware: [
+                guest
+            ]
+        }
+    },
     {
         path: '/registration',
         component: RegisterForm,
@@ -90,20 +103,20 @@ const routes = [
             ]
         },
     },
-    {
-        path: '/messages',
-        component: Messages,
-        name: 'messages',
-        meta: {
-            middleware: [
-                auth
-            ]
-        },
-    },
+    // {
+    //     path: '/messages',
+    //     component: Messages,
+    //     name: 'messages',
+    //     meta: {
+    //         middleware: [
+    //             auth
+    //         ]
+    //     },
+    // },
    {
         path: '*',
         component: NotFound,
-    }
+   }
 
 ]
 
