@@ -97,16 +97,16 @@ const routes = [
             ]
         }
     },
-    {
-        path: '/optimize',
-        component: ImageForm,
-        name: 'optimize',
-        meta: {
-            middleware: [
-                auth
-            ]
-        },
-    },
+    // {
+    //     path: '/optimize',
+    //     component: ImageForm,
+    //     name: 'optimize',
+    //     meta: {
+    //         middleware: [
+    //             auth
+    //         ]
+    //     },
+    // },
     // {
     //     path: '/messages',
     //     component: Messages,
@@ -117,14 +117,15 @@ const routes = [
     //         ]
     //     },
     // },
-   {
-        path: '*',
-        component: NotFound,
-   }
+   // {
+   //      path: '*',
+   //      component: NotFound,
+   // }
 
 ]
 
 Vue.component('main-component', Main);
+Vue.component('image-component', ImageForm);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

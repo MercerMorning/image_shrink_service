@@ -28,5 +28,5 @@ Route::group([
 //    Route::post('me', 'AuthController@me');
 });
 
-Route::post('/', 'ImageController@optimize')->name('uploadImage');
+//Route::post('/', 'ImageController@optimize')->name('uploadImage');
 Route::get('/set/{locale}', 'LocaleController@index')->name('setLocale');

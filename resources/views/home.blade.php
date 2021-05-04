@@ -9,12 +9,14 @@
 {{--    <input type="radio" name="archiveType" value="rar"> rar--}}
 {{--</form>--}}
 
-<div class="container" id="app">
+{{--<div class="container" id="app">--}}
 
-{{--    <form action="{{ route('uploadImage') }}" enctype="multipart/form-data" method="post">--}}
-{{--        @csrf--}}
-{{--            <prop-component></prop-component>--}}
-{{--    </form>--}}
-</div>
+    <form action="{{ route('uploadImage') }}" enctype="multipart/form-data" method="post">
+        @csrf
+        <div id="app">
+            <image-component></image-component>
+        </div>
+    </form>
+{{--</div>--}}
 {{--{{ $errors }}--}}
 @endsection

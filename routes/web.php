@@ -12,11 +12,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::match(['get', 'post'], '/optimize', 'ImageController@optimize')->name('uploadImage');
 
 Route::get('{vue_capture?}', function () {
     return view('welcome');
 })->where('vue_capture', '[\/\w\.-]*');
 
-//Route::get('/', 'FrontController@index')->name('home');
-#Route::view('/', 'welcome')->name('home');
+
+//Route::match(['get', 'post'], '/optimize', 'ImageController@optimize')->name('uploadImage');
+//Route::match(['get', 'post'], '/optimize', 'ImageController@optimize')->name('uploadImage');
+//Route::get('/', 'ImageController@optimize')->name('uploadImage');
+//Route::get('/', function () {
+//    dd(123);
+//});
+//Route::view('/', 'welcome')->name('home');
 #Route::view('/registration', 'auth.register')->name('registration');
+

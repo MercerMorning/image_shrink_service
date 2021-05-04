@@ -32,21 +32,21 @@ class RequestResolver
                 $renamedFile = UniqueFileSaver::save($file, 'optimized_', storage_path('app/compress'));
                 return $next($renamedFile);
             },
-//            $request->has('x', 'y', 'width', 'height') ? function ($file, $next) use ($request) {
-//                $width = $request->input('width');
-//                $height = $request->input('height');
-//                $x = $request->input('x');
-//                $y = $request->input('y');
-//                $image = Image::load($file->getPathName());
-//                $image->manualCrop($width, $height, $x, $y)->save();
-//                return $next($file);
-//            } : fn($file, $next) => $next($file),
-//            $request->has('effect') ? function ($file, $next) use ($request) {
-//                $image = Image::load($file->getPathName());
-//                $image->blur(10);
-//                $image->save();
-//                return $next($file);
-//            } : fn($file, $next) => $next($file),
+            $request->has('x', 'y', 'width', 'height') ? function ($file, $next) use ($request) {
+                $width = $request->input('width');
+                $height = $request->input('height');
+                $x = $request->input('x');
+                $y = $request->input('y');
+                $image = Image::load($file->getPathName());
+                $image->manualCrop($width, $height, $x, $y)->save();
+                return $next($file);
+            } : fn($file, $next) => $next($file),
+            $request->has('effect') ? function ($file, $next) use ($request) {
+                $image = Image::load($file->getPathName());
+                $image->blur(10);
+                $image->save();
+                return $next($file);
+            } : fn($file, $next) => $next($file),
             function ($file, $next) use ($request) {
                 $optimizer = new Optimizer($file);
                 $optimizer->optimize();

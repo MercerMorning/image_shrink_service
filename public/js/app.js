@@ -1876,15 +1876,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -1893,31 +1884,11 @@ __webpack_require__.r(__webpack_exports__);
       x: null,
       y: null,
       height: null,
-      width: null,
-      optimizedImages: null
+      width: null
     };
   },
   props: ['archiveTypes'],
   methods: {
-    send: function send(e) {
-      e.preventDefault(); // console.log( new FormData(e.target).get('image'));
-
-      axios.post('/api', new FormData(e.target)).then(function (response) {
-        // const reader = new FileReader();
-        console.log(response.data); // console.log(data.headers['content-type']);
-        // const downloadUrl = window.URL.createObjectURL(new Blob([data.data], {type: 'attachment; filename="' + data.headers.filename + '"'}));
-        // const link = document.createElement('a');
-        // link.href = downloadUrl;
-        // // link.setAttribute('download', data.headers.filename); //any other extension
-        // link.setAttribute('download', 'file.png'); //any other extension
-        // document.body.appendChild(link);
-        // link.click();
-        // link.remove();
-      })["catch"](function (resp) {
-        console.log(resp);
-        alert("Couldnt optimize image");
-      });
-    },
     sync: function sync(e) {
       var _this = this;
 
@@ -2023,12 +1994,14 @@ __webpack_require__.r(__webpack_exports__);
             type: "login",
             token: token
           }); // console.log(localStorage.getItem('token'))
+          // window.location.reload("/optimize");
 
-
-          _this.$router.replace('/optimize');
         } // console.log(response.data.data.login);
         // this.$store.commit('login');
+        // window.location.replace("http://stackoverflow.com");
 
+
+        document.location.href = '/optimize';
       }); // .catch( response => alert('couldnt log'))
       // .catch( response =>  console.log(response))
     }
@@ -2339,14 +2312,17 @@ var routes = [{
   meta: {
     middleware: [_middleware_guest__WEBPACK_IMPORTED_MODULE_10__.default]
   }
-}, {
-  path: '/optimize',
-  component: _components_Image_FormComponent_vue__WEBPACK_IMPORTED_MODULE_3__.default,
-  name: 'optimize',
-  meta: {
-    middleware: [_middleware_auth__WEBPACK_IMPORTED_MODULE_11__.default]
-  }
-}, // {
+} // {
+//     path: '/optimize',
+//     component: ImageForm,
+//     name: 'optimize',
+//     meta: {
+//         middleware: [
+//             auth
+//         ]
+//     },
+// },
+// {
 //     path: '/messages',
 //     component: Messages,
 //     name: 'messages',
@@ -2356,11 +2332,13 @@ var routes = [{
 //         ]
 //     },
 // },
-{
-  path: '*',
-  component: _components_NotFound_vue__WEBPACK_IMPORTED_MODULE_7__.default
-}];
+// {
+//      path: '*',
+//      component: NotFound,
+// }
+];
 Vue.component('main-component', _components_MainComponent_vue__WEBPACK_IMPORTED_MODULE_6__.default);
+Vue.component('image-component', _components_Image_FormComponent_vue__WEBPACK_IMPORTED_MODULE_3__.default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -2526,9 +2504,9 @@ function guest(_ref) {
       store = _ref.store;
 
   if (store.getters.isLoggedIn) {
-    return next({
-      name: 'optimize'
-    });
+    return next(); // return next({
+    //     name: 'optimize'
+    // })
   }
 
   return next();
@@ -43603,12 +43581,48 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", { on: { submit: _vm.send } }, [
-    _vm._m(0),
+  return _c("div", [
+    _c("label", { attrs: { for: "archiveType" } }, [_vm._v("Zip")]),
+    _vm._v(" "),
+    _c("input", {
+      attrs: {
+        type: "checkbox",
+        name: "archiveType",
+        id: "archiveType",
+        value: "zip"
+      }
+    }),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "archiveType" } }, [_vm._v("Rarr")]),
+    _vm._v(" "),
+    _c("input", {
+      attrs: {
+        type: "checkbox",
+        name: "archiveType",
+        id: "archiveType",
+        value: "rarr"
+      }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "exampleFormControlFile1" } }, [
+      _vm._v("\n    Example file input\n  ")
+    ]),
+    _vm._v(" "),
+    _vm.effect
+      ? _c("div", [
+          _c("input", {
+            attrs: { type: "checkbox", name: "effect", value: "blur" },
+            on: { change: _vm.effecter }
+          }),
+          _vm._v("blur\n  ")
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("input", {
       staticClass: "form-control-file",
-      attrs: { type: "file", name: "image", id: "exampleFormControlFile" },
+      attrs: { type: "file", name: "image", id: "exampleFormControlFile1" },
       on: { change: _vm.sync }
     }),
     _vm._v(" "),
@@ -43621,18 +43635,6 @@ var render = function() {
               })
             : _vm._e()
         ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.optimizedImages
-      ? _c(
-          "ul",
-          _vm._l(_vm.optimizedImages, function(image) {
-            return _c("li", [
-              _c("a", { attrs: { href: image } }, [_vm._v("картинка")])
-            ])
-          }),
-          0
-        )
       : _vm._e(),
     _vm._v(" "),
     _vm.x
@@ -43670,39 +43672,12 @@ var render = function() {
         })
       : _vm._e(),
     _vm._v(" "),
-    _c("input", { attrs: { type: "submit", value: "Отправить" } })
+    _vm.image
+      ? _c("input", { attrs: { type: "submit", value: "Отправить" } })
+      : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group mb-3" }, [
-      _c("div", { staticClass: "input-group-prepend" }, [
-        _c(
-          "label",
-          { staticClass: "input-group-text", attrs: { for: "archiveType" } },
-          [_vm._v("Zip")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "input-group-prepend" }, [
-        _c("div", { staticClass: "input-group-text" }, [
-          _c("input", {
-            attrs: {
-              type: "checkbox",
-              name: "archiveType",
-              id: "archiveType",
-              value: "zip",
-              "aria-label": "Checkbox for following text input"
-            }
-          })
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
