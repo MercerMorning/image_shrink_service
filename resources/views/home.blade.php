@@ -1,15 +1,15 @@
 @extends('layouts.site')
 @section('content')
-{{--<form action="{{ route('uploadImage') }}" enctype="multipart/form-data" method="post">--}}
-{{--    @csrf--}}
+<form action="{{ route('uploadImage') }}" enctype="multipart/form-data" method="post">
+    @csrf
 {{--    <input type="file" name="image">--}}
 {{--    <input target="__blank" type="submit" value="Отправить"></p>--}}
 {{--    <input type="submit" value="Отправить"></p>--}}
 {{--    <input type="radio" name="archiveType" value="zip"> zip--}}
 {{--    <input type="radio" name="archiveType" value="rar"> rar--}}
-{{--</form>--}}
+</form>
 
-{{--<div class="container" id="app">--}}
+<div class="container" id="app">
 
     <form action="{{ route('uploadImage') }}" enctype="multipart/form-data" method="post">
         @csrf
@@ -17,6 +17,6 @@
             <image-component></image-component>
         </div>
     </form>
-{{--</div>--}}
+</div>
 {{--{{ $errors }}--}}
 @endsection

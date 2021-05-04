@@ -21,7 +21,7 @@ class ImageController extends Controller
 
     function __construct(Request $file)
     {
-//        $this->middleware('auth:api', ['except' => ['login', 'registration']]);
+//        $this->middleware('auth:api');
         $this->file = $file->file('image');
     }
 
@@ -31,7 +31,6 @@ class ImageController extends Controller
         if ($request->method() == 'GET') {
             return view('home');
         }
-
         $resolve = new RequestResolver();
         $result = $resolve->resolve($request);
         $file = new \Symfony\Component\HttpFoundation\File\File($result->getPathName());

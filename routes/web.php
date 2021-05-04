@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::match(['get', 'post'], '/optimize', 'ImageController@optimize')->name('uploadImage');
+
+//Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::match(['get', 'post'], '/optimize', 'ImageController@optimize')->name('uploadImage');
+//});
 
 Route::get('{vue_capture?}', function () {
     return view('welcome');

@@ -1993,15 +1993,14 @@ __webpack_require__.r(__webpack_exports__);
           _this.$store.commit({
             type: "login",
             token: token
-          }); // console.log(localStorage.getItem('token'))
-          // window.location.reload("/optimize");
+          });
 
+          document.location.href = '/optimize?token=' + token; // console.log(localStorage.getItem('token'))
+          // window.location.reload("/optimize");
         } // console.log(response.data.data.login);
         // this.$store.commit('login');
         // window.location.replace("http://stackoverflow.com");
 
-
-        document.location.href = '/optimize';
       }); // .catch( response => alert('couldnt log'))
       // .catch( response =>  console.log(response))
     }
